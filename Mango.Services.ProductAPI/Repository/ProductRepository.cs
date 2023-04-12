@@ -2,6 +2,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Mango.Services.ProductAPI.DbContexts;
 using Mango.Services.ProductAPI.Dtos;
+using Mango.Services.ProductAPI.Entities;
 using Mango.Services.ProductAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,14 +19,19 @@ namespace Mango.Services.ProductAPI.Repository
             _mapper = mapper;
         }
 
-        public Task<ProductDto> CreateUpdateProductAsync(ProductDto productDto)
+        public ProductDto CreateUpdateProduct(ProductDto productDto)
         {
-            throw new NotImplementedException();
+            var product= _mapper.Map<Product>(productDto);
+            if (product.ProductId>0)
+                _context.Products.Add(product);
+            else
+                _context.Products.Add(product);
+            return productDto;
         }
 
-        public Task<bool> DeleteProductAsync(int productId)
+        public void DeleteProduct(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Remove(product);
         }
 
         public async Task<ProductDto> GetProductByIdAsync(int productId)
